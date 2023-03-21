@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="~{layout}">
+    <head>
+        <title th:text="#{files.list.headline}" />
+    </head>
+    <body>
+        <div layout:fragment="content">
+            <div class="d-flex flex-wrap mb-4">
+                <h1 th:text="#{files.list.headline}" class="flex-grow-1" />
+                <div>
+                    <a th:href="@{/filess/add}" th:text="#{files.list.createNew}" class="btn btn-primary ms-2" />
+                </div>
+            </div>
+            <div th:if="${filess.empty}" th:text="#{files.list.empty}" />
+            <div th:if="${!filess.empty}" class="table-responsive">
+                <table class="table table-striped table-hover align-middle">
+                    <thead>
+                        <tr>
+                            <th th:text="#{files.id.label}" scope="col" />
+                            <th th:text="#{files.fileName.label}" scope="col" />
+                            <th th:text="#{files.timeUploaded.label}" scope="col" />
+                            <th th:text="#{files.bytes.label}" scope="col" />
+                            <th><!-- --></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="files : ${filess}">
+                            <td th:text="${files.id}" />
+                            <td th:text="${files.fileName}" />
+                            <td th:text="${files.timeUploaded}" />
+                            <td th:text="${files.bytes}" />
+                            <td>
+                                <div class="float-end text-nowrap">
+                                    <a th:href="@{/filess/edit/{id}(id=${files.id})}" th:text="#{files.list.edit}" class="btn btn-sm btn-info" />
+                                    <form th:action="@{/filess/delete/{id}(id=${files.id})}"
+                                            th:hx-confirm="#{delete.confirm}" method="post" class="d-inline">
+                                        <button th:text="#{files.list.delete}" type="submit" class="btn btn-sm btn-danger" />
+                                    </form>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </body>
+</html>
